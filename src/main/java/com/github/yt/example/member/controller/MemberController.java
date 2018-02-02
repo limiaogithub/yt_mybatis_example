@@ -24,7 +24,7 @@ public class MemberController extends BaseController {
 
     @ApiOperation(value = "add member", notes = "add member notes", response = MemberT.class)
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public HttpResultEntity<?> add(@ApiParam(value = "memberT", required = true) @RequestBody MemberT memberT) throws Exception {
+    public HttpResultEntity<?> add(@ApiParam(value = "memberT", required = true) @RequestBody MemberT memberT) {
         memberService.save(memberT);
         return HttpResultHandler.getSuccessResult();
     }

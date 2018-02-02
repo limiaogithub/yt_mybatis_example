@@ -3,7 +3,7 @@ package com.github.yt.example.member.domain;
 import com.github.yt.mybatis.domain.BaseEntity;
 
 @javax.persistence.Table(name = "MemberT")
-public class MemberT extends BaseEntity {
+public class MemberT extends BaseEntity<MemberT> {
 
     @javax.persistence.Id
     private String memberId;
