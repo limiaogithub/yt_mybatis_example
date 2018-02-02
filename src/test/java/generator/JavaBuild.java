@@ -3,7 +3,6 @@ package generator;
 
 import com.github.yt.generator.JavaCodeGenerator;
 
-
 public class JavaBuild {
 
 
