@@ -29,7 +29,7 @@ public class Test2Controller {
 
         //测试update
         member.setUserName("修改名称");
-        test2Service.update(member);
+        test2Service.updateForSelective(member);
 
         //测试findById
         member = test2Service.find(MemberT.class, member.getMemberId());
