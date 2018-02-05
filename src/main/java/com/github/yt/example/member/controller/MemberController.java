@@ -81,7 +81,7 @@ public class MemberController extends BaseController {
 //        queryHandle.addWhereSql("t.name like CONCAT('%', #{data.name1} ,'%') and t.founderName like CONCAT('%', #{data.founderName1} ,'%')")
 //                .addExpandData("name1", "测试").addExpandData("founderName1", "system");
         //return HttpResultHandler.getSuccessResult(testService.findAll(new MemberT(), queryHandle));
-        return HttpResultHandler.getSuccessResult(memberService.getData(memberT, queryHandle.configPage()));
+        return HttpResultHandler.getSuccessResult(memberService.findAll(memberT, queryHandle.configPage()));
     }
 
     @ApiOperation(value = "带分页")

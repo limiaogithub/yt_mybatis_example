@@ -1,16 +1,13 @@
 package com.github.yt.example.simple.service.impl;
 
 
-import com.github.yt.example.simple.dao.TestMapper;
 import com.github.yt.example.member.domain.MemberT;
+import com.github.yt.example.simple.dao.TestMapper;
 import com.github.yt.example.simple.service.TestService;
 import com.github.yt.mybatis.handler.QueryHandler;
-import com.github.yt.mybatis.result.QueryResult;
-import com.github.yt.mybatis.utils.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,42 +18,41 @@ public class TestServiceImpl implements TestService {
     private TestMapper testMapper;
 
     @Override
-    public void save(MemberT memberT) {
-        testMapper.save(memberT);
+    public void test() {
+
+        //测试save
+        MemberT member = new MemberT().setUserName("测试name2").setPhone("18888888888").setAge(30);
+        testMapper.save(member);
+
+        //测试update
+        member.setUserName("修改名称");
+        testMapper.updateForSelective(member);
+
+        //测试findById
+        member = testMapper.find(MemberT.class, member.getMemberId());
+
+        //测试查询，= 、in
+        QueryHandler queryHandler = new QueryHandler();
+        List<String> queryList = new ArrayList<>();
+        queryList.add("18888888888");
+        queryList.add("18888888889");
+
+        queryHandler.addWhereSql("t.age=#{data.age1} and t.phone in" + QueryHandler.getInSql("phone1", queryList.size()));
+        queryHandler.addExpandData("age1", 30);
+        queryHandler.addExpandData("phone1", queryList.toArray());
+
+        //测试findAll
+        List<MemberT> list = testMapper.findAll(new MemberT(), queryHandler);
+
+        //测试分页查询
+        MemberT memberT = new MemberT();
+        memberT.setPhone("18888888888");
+        List<MemberT> list1 = testMapper.findAll(memberT, queryHandler.configPage().setStart(0).setLimit(10));
+        Long total = testMapper.pageTotalRecord(memberT, queryHandler);
+        System.out.println(total);
+
+        //测试delete
+        testMapper.delete(MemberT.class, member.getMemberId());
     }
 
-    @Override
-    public void update(MemberT memberT) {
-        testMapper.updateForSelective(memberT);
-    }
-
-    @Override
-    public MemberT find(Class clazz, Serializable id) {
-        return testMapper.find(clazz, id);
-    }
-
-    @Override
-    public void delete(Class clazz, Serializable id) {
-        testMapper.delete(clazz, id);
-    }
-
-    @Override
-    public List<MemberT> findAll(MemberT memberT, QueryHandler queryHandler) {
-        return testMapper.findAll(MemberT.class, BeanUtils.getValueMap(queryHandler, memberT)
-                .chainPutAll(queryHandler == null ? null : queryHandler.getExpandData()));
-    }
-
-    @Override
-    public QueryResult<MemberT> getData(MemberT entity, QueryHandler queryHandler) {
-        QueryResult<MemberT> qr = new QueryResult();
-        qr.setRecordsTotal(testMapper.pageTotalRecord((Class<MemberT>) entity.getClass(), BeanUtils.getValueMap(queryHandler, entity)
-                .chainPutAll(queryHandler == null ? null : queryHandler.getExpandData())));
-        if (qr.getRecordsTotal() == 0) {
-            qr.setData(new ArrayList<MemberT>());
-            return qr;
-        }
-        qr.setData(testMapper.pageData((Class<MemberT>) entity.getClass(), BeanUtils.getValueMap(queryHandler, entity).chainPutAll
-                (queryHandler == null ? null : queryHandler.getExpandData())));
-        return qr;
-    }
 }
