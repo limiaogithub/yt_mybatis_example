@@ -31,17 +31,14 @@ public class TestServiceImpl implements TestService {
         //测试findById
         member = testMapper.find(MemberT.class, member.getMemberId());
 
-        //测试查询，= 、in
+        // //测试findAll，= 、in
         QueryHandler queryHandler = new QueryHandler();
         List<String> queryList = new ArrayList<>();
         queryList.add("18888888888");
         queryList.add("18888888889");
-
         queryHandler.addWhereSql("t.age=#{data.age1} and t.phone in" + QueryHandler.getInSql("phone1", queryList.size()));
         queryHandler.addExpandData("age1", 30);
         queryHandler.addExpandData("phone1", queryList.toArray());
-
-        //测试findAll
         List<MemberT> list = testMapper.findAll(new MemberT(), queryHandler);
 
         //测试分页查询
@@ -51,8 +48,10 @@ public class TestServiceImpl implements TestService {
         Long total = testMapper.pageTotalRecord(memberT, queryHandler);
         System.out.println(total);
 
+        //测试逻辑删除（需要你的domain继承BaseEntity）
+        testMapper.logicDelete(MemberT.class, member.getMemberId());
+
         //测试delete
         testMapper.delete(MemberT.class, member.getMemberId());
     }
-
 }
