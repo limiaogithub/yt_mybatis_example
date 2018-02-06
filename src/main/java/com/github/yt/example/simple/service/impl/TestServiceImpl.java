@@ -59,6 +59,6 @@ public class TestServiceImpl implements TestService {
         QueryHandler queryHandler2 = new QueryHandler();
         //queryHandler.configPage();
         List list2 = testMapper.findAll(new MemberT(), queryHandler2.addJoinHandle("cardt.*", SQLJoinHandler.JoinType.LEFT_OUTER_JOIN, "cardt cardt on t.memberId=cardt.memberId"));
-        System.out.println("~");
+        System.out.println(list2.size());
     }
 }
