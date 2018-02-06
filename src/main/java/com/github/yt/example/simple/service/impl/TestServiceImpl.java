@@ -5,6 +5,7 @@ import com.github.yt.example.member.domain.MemberT;
 import com.github.yt.example.simple.dao.TestMapper;
 import com.github.yt.example.simple.service.TestService;
 import com.github.yt.mybatis.handler.QueryHandler;
+import com.github.yt.mybatis.handler.SQLJoinHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +32,7 @@ public class TestServiceImpl implements TestService {
         //测试findById
         member = testMapper.find(MemberT.class, member.getMemberId());
 
-        // //测试findAll，= 、in
+        //测试findAll
         QueryHandler queryHandler = new QueryHandler();
         List<String> queryList = new ArrayList<>();
         queryList.add("18888888888");
@@ -53,5 +54,11 @@ public class TestServiceImpl implements TestService {
 
         //测试delete
         testMapper.delete(MemberT.class, member.getMemberId());
+
+        //测试级联查询，不建议复杂场景使用，不宜维护
+        QueryHandler queryHandler2 = new QueryHandler();
+        //queryHandler.configPage();
+        List list2 = testMapper.findAll(new MemberT(), queryHandler2.addJoinHandle("cardt.*", SQLJoinHandler.JoinType.LEFT_OUTER_JOIN, "cardt cardt on t.memberId=cardt.memberId"));
+        System.out.println("~");
     }
 }

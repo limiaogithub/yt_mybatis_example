@@ -2,6 +2,7 @@ package com.github.yt.example.config;
 
 
 import com.github.yt.mybatis.config.fields.FieldsDefault;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

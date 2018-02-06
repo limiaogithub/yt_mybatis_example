@@ -2,6 +2,8 @@ package com.github.yt.example.member.domain;
 
 import com.github.yt.mybatis.domain.BaseEntity;
 
+import javax.persistence.Transient;
+
 @javax.persistence.Table(name = "MemberT")
 public class MemberT extends BaseEntity<MemberT> {
 
@@ -19,6 +21,9 @@ public class MemberT extends BaseEntity<MemberT> {
     private String email;
 
     private String phone;
+
+    @Transient
+    private String cardName;
 
     public String getMemberId() {
         return memberId;
@@ -81,5 +86,13 @@ public class MemberT extends BaseEntity<MemberT> {
     public MemberT setPhone(String phone) {
         this.phone = phone;
         return this;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
     }
 }
