@@ -58,7 +58,7 @@ public class TestServiceImpl implements TestService {
         //测试级联查询，不建议复杂场景使用，不宜维护
         QueryHandler queryHandler2 = new QueryHandler();
         //queryHandler.configPage();
-        List list2 = testMapper.findAll(new MemberT(), queryHandler2.addJoinHandle("cardt.*", SQLJoinHandler.JoinType.LEFT_OUTER_JOIN, "cardt cardt on t.memberId=cardt.memberId"));
+        List list2 = testMapper.findAll(new MemberT(), queryHandler2.addJoinHandle("cardt.*", SQLJoinHandler.JoinType.LEFT_OUTER_JOIN, "CardT cardt on t.memberId=cardt.memberId"));
         System.out.println(list2.size());
     }
 }
