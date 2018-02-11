@@ -8,12 +8,11 @@ import com.github.yt.web.controller.BaseController;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
-import java.io.File;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,15 +31,14 @@ public class TestExcelController extends BaseController {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
         response.setContentType("application/octet-stream; charset=utf-8");
-        OutputStream stream = ExcelUtils.createExcel(out, TestBean.class, getTestList());
+        ExcelUtils.createExcel(out, TestBean.class, getTestList());
         out.flush();
     }
 
     @ApiOperation(value = "import")
-    @RequestMapping(value = "/import", method = RequestMethod.GET)
-    public void import1(MultipartFile file) throws Exception {
-        File file1=new File("D:\\导出文件.xls");
-        List<TestBean> list = ExcelUtils.readExcel(file1, TestBean.class, new ExcelConfig().setStartRow(2));
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    public void import1(@RequestParam("file") MultipartFile file) throws Exception {
+        List<TestBean> list = ExcelUtils.readExcel(file, TestBean.class, new ExcelConfig().setStartRow(2));
         System.out.println(list.size());
         for (TestBean testBean : list) {
             System.out.println(testBean.toString());

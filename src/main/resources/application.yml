@@ -25,3 +25,5 @@ mybatis:
 flyway:
     baselineOnMigrate: true
     locations: db/migration,db/migration-data
+
+
